@@ -1,35 +1,28 @@
-def QuickSortRecursion(list, direction=1, buffer = [], count = 0):
+import time
 
-    if count == len(list):
-        return buffer
+def quicksort(array, start, end):
+  if start >= end:
+    return
+  
+  pivot = array[end]
+  cnt = start
 
-    elif count == 0:
-        buffer.append(list[0])
+  for i in range(start, end+1):
+    if array[i] <= pivot:
+      array[cnt], array[i] = array[i], array[cnt]
+      cnt += 1
 
-    else:
-        for i in range(len(buffer)):
-            if i == len(buffer) - 1:
-                buffer.append(list[count])
-            elif list[count] < buffer[i-1] if direction == 1 else list[count] > buffer[i-1]:
-                buffer.insert(i, list[count])
-                break
-
-    return QuickSortRecursion(list, direction, buffer, count + 1)
-
-def QuickSortLoop(list, direction=1):
-    buffer = [list[0]]
-
-    for count in range(1, len(list)):
-        for i in range(len(buffer)):
-            if i == len(buffer) - 1:
-                buffer.append(list[count])
-            elif list[count] < buffer[i-1] if direction == 1 else list[count] > buffer[i-1]:
-                buffer.insert(i, list[count])
-                break
-
-    return buffer
+  quicksort(array, start, cnt-2) # left
+  quicksort(array, cnt, end)     # right
 
 
+if __name__ == "__main__":
+  array = [7, 5, -3, 10, 11, 11, 2, 9, 5, 5, 8]
+  array1 = [7, 5, -3, 10, 11, 11, 2, 9, 5, 5, 8]
 
-print(QuickSortRecursion([23, 50, 23, 10, 56, 0, 100, -2], 1))
-print(QuickSortLoop([23, 50, 23, 10, 56, 0, 100, -2], -1))
+  start = time.time()
+  quicksort(array, 0, len(array)-1)
+  qs_time = time.time() - start
+
+  print(array)
+  print(qs_time)
