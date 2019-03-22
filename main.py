@@ -1,27 +1,28 @@
 import time
 
-def quicksort(array, start, end):
+def quicksort(array, start=0, end=-1, reverse=False, key=lambda p:p):
+  if end == -1:
+    end = len(array)-1
+  
   if start >= end:
     return
-  
-  pivot = array[end]
+
+  pivot = key(array[end])
   cnt = start
 
   for i in range(start, end+1):
-    if array[i] <= pivot:
+    if key(array[i]) >= pivot if reverse else key(array[i]) <= pivot:
       array[cnt], array[i] = array[i], array[cnt]
       cnt += 1
-
-  quicksort(array, start, cnt-2) # left
-  quicksort(array, cnt, end)     # right
-
+  
+  quicksort(array, start, cnt-2, reverse, key)
+  quicksort(array, cnt, end, reverse, key)
 
 if __name__ == "__main__":
-  array = [7, 5, -3, 10, 11, 11, 2, 9, 5, 5, 8]
-  array1 = [7, 5, -3, 10, 11, 11, 2, 9, 5, 5, 8]
+  array = [{'x': 34}, {'x': -3}, {'x': 25}, {'x': 25}, {'x': -3}]
 
   start = time.time()
-  quicksort(array, 0, len(array)-1)
+  quicksort(array, key=lambda p : p["x"], reverse=True)
   qs_time = time.time() - start
 
   print(array)
